@@ -1,6 +1,5 @@
 """~+~+[csr]+~+~"""
 
-
 import os
 import random
 

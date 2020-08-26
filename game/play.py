@@ -1,6 +1,5 @@
 """~+~+[csr]+~+~"""
 
-
 import pygame
 from pygame.locals import *
 
