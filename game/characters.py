@@ -21,8 +21,8 @@ class Skarlet(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.img = pygame.image.load(os.path.join(IMAGES, "skarlet.png"))
-        self.rect = self.img.get_rect()
+        self.image = pygame.image.load(os.path.join(IMAGES, "skarlet.png"))
+        self.rect = self.image.get_rect()
         self.alive = True
         self.life_points = 300
         self.speed = 20
@@ -57,13 +57,33 @@ class Skarlet(pygame.sprite.Sprite):
 
 
 class Star(pygame.sprite.Sprite):
-    
+    """
+    ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
+    <{*}> Stars of the midnight range, shining through the light,
+    guide my way tonight. <{*}>
+    ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
+    """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((1,1))
+        self.image.fill((255,255,0))
+        self.rect = self.image.get_rect()
+        self.rect[0] = random.randint(0, 669)
+        self.rect[1] = 0
+        self.speed = 1  
     
-    def update(self):
-        return 
+    @staticmethod
+    def factory(group: pygame.sprite.Group) -> None:
+        if not int(random.random() * 96):
+            group.add(Star())
 
+    def draw(self, screen) -> None:
+        screen.blit(self.image, self.rect)
+
+    def update(self) -> None:
+        self.rect[1] += self.speed 
+        if self.rect[1] >= 696:
+            self.kill()
 
 class Comet(pygame.sprite.Sprite):
     
@@ -73,6 +93,13 @@ class Comet(pygame.sprite.Sprite):
     def update(self):
         return 
 
+class Laser(pygame.sprite.Sprite):
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+    def update(self):
+        return 
 
 class Enemy(pygame.sprite.Sprite):
 
