@@ -3,13 +3,12 @@
 import pygame
 from pygame.locals import *
 
-from characters import (
-    Comet,
-    Enemy,
-    Laser,
-    Skarlet,
-    Star
-)
+from characters.comet import Comet
+from characters.enemy import Enemy 
+from characters.laser import Laser
+from characters.skarlet import Skarlet
+from characters.star import Star 
+
 
 class Game(object):
 
@@ -23,21 +22,27 @@ class Game(object):
         self.screen = pygame.display.set_mode(self.DIMENSIONS, RESIZABLE)
         self.skarlet = Skarlet()
         self.stars = pygame.sprite.Group()
+        self.comets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
 
     def _update(self) -> None:
+        for comet in self.comets:
+            comet.update()
         for star in self.stars:
             star.update()
 
     def _draw(self) -> None:
+        for comet in self.comets:
+            comet.draw(self.screen)
         for star in self.stars:
             star.draw(self.screen)
     
-    def _blit(self, color: tuple=(0, 0, 130)) -> None:
+    def _blit(self, color: tuple=(0, 0, 69)) -> None:
         self.screen.fill(color)
         self.screen.blit(self.skarlet.image, self.skarlet.rect)
     
     def _replicate(self):
+        Comet.factory(self.comets)
         Star().factory(self.stars)
 
     def main(self) -> None:
@@ -54,7 +59,7 @@ class Game(object):
             self._update()
             self._draw()
             pygame.display.update()
-            self.clock.tick(696)
+            self.clock.tick(1500)
         pygame.quit()
     
 
