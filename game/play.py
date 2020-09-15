@@ -26,16 +26,12 @@ class Game(object):
         self.enemies = pygame.sprite.Group()
 
     def _update(self) -> None:
-        for comet in self.comets:
-            comet.update()
-        for star in self.stars:
-            star.update()
+        for comet in self.comets:comet.update()
+        for star in self.stars: star.update()
 
     def _draw(self) -> None:
-        for comet in self.comets:
-            comet.draw(self.screen)
-        for star in self.stars:
-            star.draw(self.screen)
+        for comet in self.comets: comet.draw(self.screen)
+        for star in self.stars: star.draw(self.screen)
     
     def _blit(self, color: tuple=(0, 0, 69)) -> None:
         self.screen.fill(color)
@@ -43,7 +39,7 @@ class Game(object):
     
     def _replicate(self):
         Comet.factory(self.comets)
-        Star().factory(self.stars)
+        Star.factory(self.stars)
 
     def main(self) -> None:
         running = True
@@ -65,18 +61,4 @@ class Game(object):
 
 if __name__ == "__main__":
     Game().main()
-
-    
-    
-
-
-    
-
-    
-
-
-
-    
-
-
 
