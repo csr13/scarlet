@@ -1,0 +1,38 @@
+name: Scarlet
+
+on:
+  push:
+    branches:
+      - master
+      - experminetal
+  pull_request:
+    branches:
+      - master
+      - experimental
+
+jobs:
+  code_scans:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: ['3.6.9']
+    steps:
+      - uses: actions/setup-python@v2
+      - name: Python Installation
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=89 --statistics
+
+      - name: Bandit
+        uses: jpetrucciani/bandit-check@master
+        with:
+          args: --recursive --in-place --aggressive .
