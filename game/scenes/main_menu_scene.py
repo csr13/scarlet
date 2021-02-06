@@ -6,7 +6,7 @@ sys.path.append("..")
 
 from collections import OrderedDict
 
-from pygame.locals import K_ESCAPE, K_RETURN
+from pygame.locals import K_ESCAPE, K_RETURN, K_1, K_2
 
 from .base_scene import Scene
 from utils.text_utils import Text
@@ -29,13 +29,11 @@ class MainMenu(Scene):
         i = 0
         for k, v in self.options.items():
             text = Text(k, (250, 250 + i), **{"size": 30, "color": "green"})
-            text.render()
             text.draw(self.screen)
             i += 80
 
     def display_menu_banner(self):
         text = Text("Scarlet", (225, 69), **{"color": "red", "size": 69})
-        text.render()
         text.draw(self.screen)
 
     def start(self):
@@ -50,6 +48,10 @@ class MainMenu(Scene):
                     running = False
                 elif key[K_RETURN]:
                     self.first_level()
+                elif key[K_1]:
+                    self.first_level()
+                elif key[K_2]:
+                    self.credits()
             self.pygame.display.flip()
             self.clock.tick(1500)
         self.pygame.quit()
@@ -65,7 +67,7 @@ class MainMenu(Scene):
                     running = False
                 elif key[K_RETURN]:
                     running = False
-            self.pygame.display.flip()
+                self.pygame.display.update()
             self.clock.tick(1500)
 
     def first_level(self):
@@ -77,6 +79,4 @@ class MainMenu(Scene):
                 key = self.pygame.key.get_pressed()
                 if key[K_ESCAPE]:
                     running = False
-            self.pygame.display.flip()
             self.clock.tick(1500)
-        self.pygame.quit()
