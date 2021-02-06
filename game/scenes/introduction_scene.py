@@ -2,8 +2,10 @@ from .base_scene import Scene
 
 
 class IntroductionScene(Scene):
-    def __init__(self, pygame, display, screen, clock):
+    def __init__(self, pygame, display, screen, clock, game, **kwargs):
         super().__init__(pygame, display, screen, clock)
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
     def _blit(self, color=(0, 0, 69)):
         self.screen.fill(color)
