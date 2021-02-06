@@ -1,0 +1,18 @@
+title = "Scarlet"
+
+[owner]
+name = "csr13"
+
+[tool.black]
+target-version = ["py36"]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.github
+  | \.gitignore
+  | __pycache__
+  | assets
+)/
+'''
