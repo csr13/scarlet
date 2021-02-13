@@ -17,8 +17,8 @@ class MainMenu(Scene):
         super().__init__(game)
         for k, v in kwargs.items():
             setattr(self, k, v)
-        self.text_refs = OrderedDict()
         self.dirty_rects = []
+        self.text_refs = OrderedDict()
         self.options = OrderedDict(
             [
                 (self.first_level.__doc__, self.first_level),
@@ -57,7 +57,6 @@ class MainMenu(Scene):
             for event in self.pygame.event.get():
                 self.pygame.event.pump()
                 key = self.pygame.key.get_pressed()
-
                 if key[K_ESCAPE]:
                     running = False
                 elif key[K_RETURN]:
@@ -70,10 +69,8 @@ class MainMenu(Scene):
                     text_ref = self.text_refs[1]
                     self.option_animation(text_ref)
                     self.credits()
-
             self.display_menu_banner()
             self.display_main_menu_options()
-
             self.pygame.display.update(self.dirty_rects)
             self.dirty_rects = []
             self.clock.tick(10)
@@ -82,10 +79,8 @@ class MainMenu(Scene):
     def credits(self):
         """2) See Credits."""
         self.set_title_display("Scarlet | Credits")
-        self.dirty_rects = []
         running = True
         while running:
-
             self.screen.fill(self.base_background_color)
             for event in self.pygame.event.get():
                 self.pygame.event.pump()
@@ -94,13 +89,13 @@ class MainMenu(Scene):
                     running = False
                 elif key[K_RETURN]:
                     running = False
-
                 self.pygame.display.update(self.dirty_rects)
                 self.dirty_rects = []
             self.clock.tick(10)
 
     def first_level(self):
         """1) Start Game."""
+        self.set_title_display("Scarlet | Gameplay")
         running = False
         while running:
             for event in self.pygame.event.get():
