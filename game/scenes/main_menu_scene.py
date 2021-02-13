@@ -13,11 +13,12 @@ from utils.text_utils import Text
 
 
 class MainMenu(Scene):
-    def __init__(self, pygame, display, screen, clock, game, **kwargs):
-        super().__init__(pygame, display, screen, clock)
-        self.game = game
+    def __init__(self, game, **kwargs):
+        super().__init__(game)
         for k, v in kwargs.items():
             setattr(self, k, v)
+        self.text_refs = OrderedDict()
+        self.dirty_rects = []
         self.options = OrderedDict(
             [
                 (self.first_level.__doc__, self.first_level),
@@ -27,39 +28,65 @@ class MainMenu(Scene):
 
     def display_main_menu_options(self):
         i = 0
-        for k, v in self.options.items():
-            text = Text(k, (250, 250 + i), **{"size": 30, "color": "green"})
+        for num, key in enumerate(self.options.keys(), start=0):
+            kwargs = {"size": 30, "color": "green"}
+            text = Text(key, (250, 250 + i), **kwargs)
             text.draw(self.screen)
+            self.dirty_rects.append(text)
+            self.text_refs[num] = text
             i += 80
 
     def display_menu_banner(self):
-        text = Text("Scarlet", (225, 69), **{"color": "red", "size": 69})
+        kwargs = {"color": "red", "size": 69}
+        text = Text("Scarlet", (225, 69), **kwargs)
         text.draw(self.screen)
+        self.dirty_rects.append(text)
+
+    def option_animation(self, option: Text):
+        position = (option.x, option.y)
+        selection = self.pygame.Surface(option.img.get_size())
+        selection.fill((0, 0, 255))
+        selection_blit = self.screen.blit(selection, position)
+        self.dirty_rects.append(selection_blit)
 
     def start(self):
-        self.display_menu_banner()
-        self.display_main_menu_options()
+
         running = True
         while running:
+            self.screen.fill(self.base_background_color)
             for event in self.pygame.event.get():
                 self.pygame.event.pump()
                 key = self.pygame.key.get_pressed()
+
                 if key[K_ESCAPE]:
                     running = False
                 elif key[K_RETURN]:
                     self.first_level()
                 elif key[K_1]:
+                    text_ref = self.text_refs[0]
+                    self.option_animation(text_ref)
                     self.first_level()
                 elif key[K_2]:
+                    text_ref = self.text_refs[1]
+                    self.option_animation(text_ref)
                     self.credits()
-            self.pygame.display.flip()
-            self.clock.tick(1500)
+
+            self.display_menu_banner()
+            self.display_main_menu_options()
+
+            self.pygame.display.update(self.dirty_rects)
+            self.dirty_rects = []
+            self.clock.tick(10)
         self.pygame.quit()
 
     def credits(self):
         """2) See Credits."""
-        running = False
+        self.set_title_display("Scarlet | Credits")
+        self.dirty_rects = []
+        running = True
         while running:
+
+            self.screen.fill(self.base_background_color)
             for event in self.pygame.event.get():
                 self.pygame.event.pump()
                 key = self.pygame.key.get_pressed()
@@ -67,8 +94,10 @@ class MainMenu(Scene):
                     running = False
                 elif key[K_RETURN]:
                     running = False
-                self.pygame.display.update()
-            self.clock.tick(1500)
+
+                self.pygame.display.update(self.dirty_rects)
+                self.dirty_rects = []
+            self.clock.tick(10)
 
     def first_level(self):
         """1) Start Game."""

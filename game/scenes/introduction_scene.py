@@ -2,13 +2,13 @@ from .base_scene import Scene
 
 
 class IntroductionScene(Scene):
-    def __init__(self, pygame, display, screen, clock, game, **kwargs):
-        super().__init__(pygame, display, screen, clock)
+    def __init__(self, game, **kwargs):
+        super().__init__(game)
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def _blit(self, color=(0, 0, 69)):
-        self.screen.fill(color)
+    def _blit(self):
+        self.screen.fill(self.base_background_color)
 
     def start(self):
         tick = 0

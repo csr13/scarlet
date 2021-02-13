@@ -16,6 +16,7 @@ class Game(object):
         pygame.init()
         pygame.key.set_repeat(10, 100)
         pygame.display.set_caption("Deep in the heart of nowhere")
+        self.pygame = pygame
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(self.DIMENSIONS, RESIZABLE)
         self.scene = None
@@ -26,11 +27,10 @@ class Game(object):
         self.set_scene(IntroductionScene)
 
     def set_scene(self, scene):
-        scene = scene(pygame, pygame.display, self.screen, self.clock, self)
+        scene = scene(self)
         self.scene = scene
 
     def main(self):
-        self.set_scene(IntroductionScene)
         if self.scene.start():
             self.set_scene(MainMenu)
         self.scene.start()
